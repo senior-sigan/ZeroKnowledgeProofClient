@@ -14,7 +14,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView
 
 class QRCodeScannerActivity: AppCompatActivity(), ZXingScannerView.ResultHandler {
     val formats = listOf(BarcodeFormat.QR_CODE)
-    var mScannerView: ZXingScannerView? = null
+    lateinit var mScannerView: ZXingScannerView
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?) {
         when(requestCode) {
@@ -36,7 +36,7 @@ class QRCodeScannerActivity: AppCompatActivity(), ZXingScannerView.ResultHandler
 
     fun startScanner() {
         mScannerView = ZXingScannerView(this)
-        mScannerView?.setFormats(formats)
+        mScannerView.setFormats(formats)
         setContentView(mScannerView)
     }
 
@@ -54,13 +54,13 @@ class QRCodeScannerActivity: AppCompatActivity(), ZXingScannerView.ResultHandler
 
     override fun onResume() {
         super.onResume();
-        mScannerView?.setResultHandler(this); // Register ourselves as a handler for scan results.
-        mScannerView?.startCamera();          // Start camera on resume
+        mScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.
+        mScannerView.startCamera();          // Start camera on resume
     }
 
     override fun onPause() {
         super.onPause();
-        mScannerView?.stopCamera();           // Stop camera on pause
+        mScannerView.stopCamera();           // Stop camera on pause
     }
 
     override fun handleResult(rawResult: Result) {
