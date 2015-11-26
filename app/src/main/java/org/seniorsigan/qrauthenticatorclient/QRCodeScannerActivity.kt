@@ -1,6 +1,7 @@
 package org.seniorsigan.qrauthenticatorclient
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -67,5 +68,8 @@ class QRCodeScannerActivity: AppCompatActivity(), ZXingScannerView.ResultHandler
         // Do something with the result here
         Log.v(TAG, rawResult.text); // Prints scan results
         Log.v(TAG, rawResult.barcodeFormat.toString()); // Prints the scan format (qrcode, pdf417 etc.)
+        val intent = Intent(this, AuthActivity::class.java)
+        intent.putExtra(RAW_TOKEN_INTENT, rawResult.text)
+        startActivity(intent)
     }
 }
