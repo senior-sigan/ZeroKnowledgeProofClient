@@ -2,15 +2,17 @@ package org.seniorsigan.qrauthenticatorclient
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.squareup.okhttp.*
+import org.seniorsigan.qrauthenticatorclient.persistence.AccountModel
+import org.seniorsigan.qrauthenticatorclient.persistence.AccountsOpenHelper
 import java.io.IOException
 
 class SignupActivity : AppCompatActivity() {
@@ -21,6 +23,7 @@ class SignupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
+        val accountsDb = AccountsOpenHelper(this)
         val token = intent.getSerializableExtra(SIGNUP_TOKEN_INTENT) as Token
         val btn = findViewById(R.id.signUpBtn) as Button
         val login = findViewById(R.id.signUpLogin) as EditText
@@ -50,7 +53,17 @@ class SignupActivity : AppCompatActivity() {
 
                         override fun onResponse(response: Response?) {
                             if (response != null) {
-                                Log.d(TAG, response.body().string())
+                                val rawJson = response.body().string()
+                                Log.d(TAG, "Get from $url $rawJson")
+                                val data = App.gson.fromJson(rawJson, CommonResponse::class.java)
+                                if (data != null && data.success) {
+                                    accountsDb.saveAccount(AccountModel(
+                                            name = model.login,
+                                            domain = token.domainName,
+                                            tokens = keys,
+                                            currentToken = keys.size - 2
+                                    ))
+                                }
                             }
                         }
                     })

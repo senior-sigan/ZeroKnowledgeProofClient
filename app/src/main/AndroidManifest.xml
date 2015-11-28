@@ -26,12 +26,9 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".AuthActivity"
-            android:label="@string/title_activity_auth"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".TokenParserActivity" />
-        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".LoginActivity"/>
     </application>
 
 </manifest>

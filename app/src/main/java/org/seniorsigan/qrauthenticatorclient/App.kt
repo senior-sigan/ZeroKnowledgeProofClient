@@ -11,6 +11,7 @@ import java.util.*
 const val TAG = "QRAuth"
 const val RAW_TOKEN_INTENT = "RAW_TOKEN_INTENT"
 const val SIGNUP_TOKEN_INTENT = "SIGNUP_TOKEN_INTENT"
+const val LOGIN_TOKEN_INTENT= "LOGIN_TOKEN_INTENT"
 
 class App: Application() {
     companion object {

@@ -23,6 +23,7 @@ class TokenParserActivity : AppCompatActivity() {
         } else {
             goToError()
         }
+        finish()
     }
 
     private fun goToError() {
@@ -37,6 +38,9 @@ class TokenParserActivity : AppCompatActivity() {
     }
 
     private fun goToLogin(token: Token) {
-
+        Log.d(TAG, "Go to login")
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.putExtra(LOGIN_TOKEN_INTENT, token)
+        startActivity(intent)
     }
 }
