@@ -68,7 +68,7 @@ class QRCodeScannerActivity: AppCompatActivity(), ZXingScannerView.ResultHandler
         // Do something with the result here
         Log.v(TAG, rawResult.text); // Prints scan results
         Log.v(TAG, rawResult.barcodeFormat.toString()); // Prints the scan format (qrcode, pdf417 etc.)
-        val intent = Intent(this, AuthActivity::class.java)
+        val intent = Intent(this, TokenParserActivity::class.java)
         intent.putExtra(RAW_TOKEN_INTENT, rawResult.text)
         startActivity(intent)
     }

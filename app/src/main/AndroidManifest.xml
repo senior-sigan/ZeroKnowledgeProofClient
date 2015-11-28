@@ -3,6 +3,7 @@
     package="org.seniorsigan.qrauthenticatorclient">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -28,7 +29,9 @@
         <activity
             android:name=".AuthActivity"
             android:label="@string/title_activity_auth"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".TokenParserActivity" />
+        <activity android:name=".SignupActivity"></activity>
     </application>
 
 </manifest>

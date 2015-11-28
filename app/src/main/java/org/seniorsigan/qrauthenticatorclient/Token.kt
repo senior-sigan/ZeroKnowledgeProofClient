@@ -1,5 +1,6 @@
 package org.seniorsigan.qrauthenticatorclient
 
+import java.io.Serializable
 import java.util.*
 
 data class Token(
@@ -8,4 +9,4 @@ data class Token(
         val path: String,
         val expiresAt: Date,
         val type: String
-)
+): Serializable
