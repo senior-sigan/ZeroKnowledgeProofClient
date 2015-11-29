@@ -11,6 +11,10 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.Toast
 import com.squareup.okhttp.*
+import org.jetbrains.anko.find
+import org.jetbrains.anko.onUiThread
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 import org.seniorsigan.qrauthenticatorclient.persistence.AccountModel
 import org.seniorsigan.qrauthenticatorclient.persistence.AccountsOpenHelper
 import java.io.IOException
@@ -28,12 +32,16 @@ class LoginActivity : AppCompatActivity() {
         accountsDb = AccountsOpenHelper(this)
         val accounts = accountsDb.findAccounts(token.domainName)
         Log.d(TAG, accounts.toString())
-        sendLoginRequest(accounts.last(), token)
 
-        val accountsView = findViewById(R.id.accounts_recycler_view) as RecyclerView
+        val accountsView = find<RecyclerView>(R.id.accounts_recycler_view)
         accountsView.setHasFixedSize(true)
         accountsView.layoutManager = LinearLayoutManager(this)
-        accountsView.adapter = AccountsAdapter(accounts)
+        val adapter = AccountsAdapter(accounts)
+        adapter.onItemClickListener = {
+            Log.d(TAG, "Selected account $it")
+            sendLoginRequest(it, token)
+        }
+        accountsView.adapter = adapter
     }
     
     fun sendLoginRequest(account: AccountModel, token: Token) {
@@ -59,6 +67,7 @@ class LoginActivity : AppCompatActivity() {
                         if (data != null && data.success) {
                             Log.d(TAG, "Logged in $url as ${account.name}")
                             accountsDb.nextTokenCount(account)
+                            onUiThread { toast("Logged in as ${account.name}") }
                         }
                     }
                 }
