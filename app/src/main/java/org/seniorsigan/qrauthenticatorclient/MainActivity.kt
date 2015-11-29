@@ -3,15 +3,14 @@ package org.seniorsigan.qrauthenticatorclient
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.view.View
 import android.view.Menu
 import android.view.MenuItem
+import org.jetbrains.anko.find
+import org.jetbrains.anko.onClick
 import org.seniorsigan.qrauthenticatorclient.persistence.AccountsOpenHelper
 
 class MainActivity : AppCompatActivity() {
@@ -20,11 +19,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        val toolbar = find<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener { view ->
+        val fab = find<FloatingActionButton>(R.id.fab)
+        fab.onClick { view ->
             val intent = Intent(this, QRCodeScannerActivity::class.java)
             startActivity(intent)
         }
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         accountsDb = AccountsOpenHelper(this)
         val accounts = accountsDb.findAllAccounts()
 
-        val accountsView = findViewById(R.id.accounts_recycler_view) as RecyclerView
+        val accountsView = find<RecyclerView>(R.id.accounts_recycler_view)
         accountsView.setHasFixedSize(true)
         accountsView.layoutManager = LinearLayoutManager(this)
         accountsView.adapter = AccountsAdapter(accounts)

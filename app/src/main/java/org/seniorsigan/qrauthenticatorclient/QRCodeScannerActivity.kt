@@ -8,10 +8,10 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.Toast
-import com.google.zxing.Result
 import com.google.zxing.BarcodeFormat
+import com.google.zxing.Result
 import me.dm7.barcodescanner.zxing.ZXingScannerView
+import org.jetbrains.anko.toast
 
 class QRCodeScannerActivity: AppCompatActivity(), ZXingScannerView.ResultHandler {
     val formats = listOf(BarcodeFormat.QR_CODE)
@@ -25,11 +25,7 @@ class QRCodeScannerActivity: AppCompatActivity(), ZXingScannerView.ResultHandler
                     startScanner()
                 }
                 else {
-                    Toast.makeText(
-                            applicationContext,
-                            "You have not permission to read from external storage!",
-                            Toast.LENGTH_LONG
-                    ).show()
+                    toast("You have not permission to read from external storage!")
                 }
             }
         }

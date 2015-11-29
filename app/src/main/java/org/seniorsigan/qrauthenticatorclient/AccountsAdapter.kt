@@ -1,6 +1,7 @@
 package org.seniorsigan.qrauthenticatorclient
 
 import android.support.v7.widget.RecyclerView
+import android.text.format.DateUtils
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,10 @@ class ViewHolder(view: View, var onItemClickListener: ((AccountModel) -> Unit)?)
         itemView?.onClick { onItemClickListener?.invoke(account) }
         name.text = account.name
         domain.text = account.domain
-        updatedAt.text = account.updatedAt.toString()
         tokensUsed.text = "${account.tokens.size}/${account.currentToken}"
+        updatedAt.text = DateUtils.getRelativeTimeSpanString(
+                account.updatedAt.time,
+                System.currentTimeMillis(),
+                DateUtils.SECOND_IN_MILLIS)
     }
 }

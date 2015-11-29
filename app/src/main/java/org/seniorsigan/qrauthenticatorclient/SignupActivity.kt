@@ -9,8 +9,11 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import com.squareup.okhttp.*
+import org.jetbrains.anko.find
+import org.jetbrains.anko.onClick
+import org.jetbrains.anko.onUiThread
+import org.jetbrains.anko.toast
 import org.seniorsigan.qrauthenticatorclient.persistence.AccountModel
 import org.seniorsigan.qrauthenticatorclient.persistence.AccountsOpenHelper
 import java.io.IOException
@@ -25,9 +28,9 @@ class SignupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signup)
         val accountsDb = AccountsOpenHelper(this)
         val token = intent.getSerializableExtra(SIGNUP_TOKEN_INTENT) as Token
-        val btn = findViewById(R.id.signUpBtn) as Button
-        val login = findViewById(R.id.signUpLogin) as EditText
-        btn.setOnClickListener {view ->
+        val btn = find<Button>(R.id.signUpBtn)
+        val login = find<EditText>(R.id.signUpLogin)
+        btn.onClick { view ->
             if (login.text != null && login.text.isNotBlank()) {
                 Log.d(TAG, "Start generating keys sequence for ${login.text.toString()}")
                 val keys = App.keysGenerator.generateSequence(nonce(), keysAmount)
@@ -64,6 +67,7 @@ class SignupActivity : AppCompatActivity() {
                                             currentToken = keys.size - 2
                                     ))
                                 }
+                                onUiThread { toast("Signed up in ${token.domainName} as ${model.login}") }
                             }
                         }
                     })
@@ -87,11 +91,7 @@ class SignupActivity : AppCompatActivity() {
                     Log.d(TAG, "Permissions on Internet obtained")
                 }
                 else {
-                    Toast.makeText(
-                            applicationContext,
-                            "You have not permission to use internet!",
-                            Toast.LENGTH_LONG
-                    ).show()
+                    toast("You have not permission to use internet!")
                 }
             }
         }

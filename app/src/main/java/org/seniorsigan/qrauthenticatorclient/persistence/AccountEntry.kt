@@ -1,7 +1,5 @@
 package org.seniorsigan.qrauthenticatorclient.persistence
 
-import android.provider.BaseColumns
-
 object AccountEntry {
     val _ID = "id"
     val NAME = "name"

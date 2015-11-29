@@ -2,19 +2,17 @@ package org.seniorsigan.qrauthenticatorclient
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.widget.Toast
 import com.squareup.okhttp.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onUiThread
 import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
 import org.seniorsigan.qrauthenticatorclient.persistence.AccountModel
 import org.seniorsigan.qrauthenticatorclient.persistence.AccountsOpenHelper
 import java.io.IOException
@@ -87,11 +85,7 @@ class LoginActivity : AppCompatActivity() {
                     Log.d(TAG, "Permissions on Internet obtained")
                 }
                 else {
-                    Toast.makeText(
-                            applicationContext,
-                            "You have not permission to use internet!",
-                            Toast.LENGTH_LONG
-                    ).show()
+                    toast("You have not permission to use internet!")
                 }
             }
         }
