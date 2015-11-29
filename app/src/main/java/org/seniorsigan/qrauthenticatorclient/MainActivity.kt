@@ -5,12 +5,17 @@ import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutCompat
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.Menu
 import android.view.MenuItem
+import org.seniorsigan.qrauthenticatorclient.persistence.AccountsOpenHelper
 
 class MainActivity : AppCompatActivity() {
+    lateinit var accountsDb: AccountsOpenHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +28,14 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, QRCodeScannerActivity::class.java)
             startActivity(intent)
         }
+
+        accountsDb = AccountsOpenHelper(this)
+        val accounts = accountsDb.findAllAccounts()
+
+        val accountsView = findViewById(R.id.accounts_recycler_view) as RecyclerView
+        accountsView.setHasFixedSize(true)
+        accountsView.layoutManager = LinearLayoutManager(this)
+        accountsView.adapter = AccountsAdapter(accounts)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

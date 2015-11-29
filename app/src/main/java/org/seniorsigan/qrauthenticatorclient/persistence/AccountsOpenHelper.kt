@@ -7,12 +7,16 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import org.seniorsigan.qrauthenticatorclient.TAG
+import java.text.SimpleDateFormat
+import java.util.*
 
 private const val DATABASE_VERSION = 1
 private const val DATABASE_NAME = "accounts.db"
 private const val TABLE_NAME = "account"
 
 class AccountsOpenHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    val iso8601Format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("""
             CREATE TABLE $TABLE_NAME (
@@ -25,6 +29,16 @@ class AccountsOpenHelper(context: Context): SQLiteOpenHelper(context, DATABASE_N
             ${AccountEntry.UPDATED_AT} TIMESTAMP NOT NULL DEFAULT current_timestamp,
             UNIQUE(${AccountEntry.NAME}, ${AccountEntry.DOMAIN})
         )""")
+
+        db?.execSQL("""
+            CREATE TRIGGER updated_at_trigger
+            AFTER UPDATE ON $TABLE_NAME
+            FOR EACH ROW BEGIN
+                UPDATE $TABLE_NAME
+                SET ${AccountEntry.UPDATED_AT} = current_timestamp
+                WHERE ${AccountEntry._ID} = old.${AccountEntry._ID};
+            END
+        """)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -80,6 +94,7 @@ class AccountsOpenHelper(context: Context): SQLiteOpenHelper(context, DATABASE_N
     }
 
     fun convert(cursor: Cursor?): List<AccountModel> {
+        iso8601Format.timeZone = TimeZone.getTimeZone("UTC")
         val accounts: MutableList<AccountModel> = arrayListOf()
         if (cursor != null) {
             Log.d(TAG, "Loaded ${cursor.count} elements")
@@ -95,7 +110,9 @@ class AccountsOpenHelper(context: Context): SQLiteOpenHelper(context, DATABASE_N
                             name = cursor.getString(1),
                             domain = cursor.getString(2),
                             tokens = tokens,
-                            currentToken = cursor.getInt(4)))
+                            currentToken = cursor.getInt(4),
+                            updatedAt = iso8601Format.parse(cursor.getString(5)),
+                            createdAt = iso8601Format.parse(cursor.getString(6))))
                 } while (cursor.moveToNext())
             }
         }
@@ -138,5 +155,22 @@ class AccountsOpenHelper(context: Context): SQLiteOpenHelper(context, DATABASE_N
         } finally {
             writableDatabase.endTransaction()
         }
+    }
+
+    fun findAllAccounts(): List<AccountModel> {
+        Log.d(TAG, "Try to find all accounts")
+
+        val cursor = readableDatabase?.query(
+                TABLE_NAME, arrayOf(
+                AccountEntry._ID,
+                AccountEntry.NAME,
+                AccountEntry.DOMAIN,
+                AccountEntry.TOKENS,
+                AccountEntry.CURRENT_TOKEN,
+                AccountEntry.CREATED_AT,
+                AccountEntry.UPDATED_AT),
+                null, null, null, null, null, null)
+
+        return convert(cursor)
     }
 }

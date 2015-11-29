@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.Toast
 import com.squareup.okhttp.*
@@ -27,6 +29,11 @@ class LoginActivity : AppCompatActivity() {
         val accounts = accountsDb.findAccounts(token.domainName)
         Log.d(TAG, accounts.toString())
         sendLoginRequest(accounts.last(), token)
+
+        val accountsView = findViewById(R.id.accounts_recycler_view) as RecyclerView
+        accountsView.setHasFixedSize(true)
+        accountsView.layoutManager = LinearLayoutManager(this)
+        accountsView.adapter = AccountsAdapter(accounts)
     }
     
     fun sendLoginRequest(account: AccountModel, token: Token) {
