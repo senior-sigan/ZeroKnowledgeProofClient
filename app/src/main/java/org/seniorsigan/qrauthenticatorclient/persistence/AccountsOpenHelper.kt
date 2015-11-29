@@ -125,12 +125,12 @@ class AccountsOpenHelper(context: Context): SQLiteOpenHelper(context, DATABASE_N
         }
     }
 
-    fun incrementTokenCount(model: AccountModel) {
+    fun nextTokenCount(model: AccountModel) {
         writableDatabase.beginTransaction()
         try {
             val account = findAccount(model.domain, model.name) ?: throw PersistenceException("Account for $model not found in db")
             val values = ContentValues()
-            values.put(AccountEntry.CURRENT_TOKEN, model.currentToken + 1)
+            values.put(AccountEntry.CURRENT_TOKEN, model.currentToken - 1)
             writableDatabase.update(TABLE_NAME, values, "${AccountEntry._ID} = ?", arrayOf(model.id.toString()))
             writableDatabase.setTransactionSuccessful()
         } catch(e: Exception) {

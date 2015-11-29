@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
                         val data = App.gson.fromJson(rawJson, CommonResponse::class.java)
                         if (data != null && data.success) {
                             Log.d(TAG, "Logged in $url as ${account.name}")
-                            accountsDb.incrementTokenCount(account)
+                            accountsDb.nextTokenCount(account)
                         }
                     }
                 }
