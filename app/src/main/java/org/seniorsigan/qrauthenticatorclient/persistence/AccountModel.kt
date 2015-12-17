@@ -1,5 +1,6 @@
 package org.seniorsigan.qrauthenticatorclient.persistence
 
+import java.io.Serializable
 import java.util.*
 
 data class AccountModel(
@@ -10,4 +11,4 @@ data class AccountModel(
         val currentToken: Int = 0,
         val updatedAt: Date = Date(),
         val createdAt: Date = Date()
-)
+): Serializable

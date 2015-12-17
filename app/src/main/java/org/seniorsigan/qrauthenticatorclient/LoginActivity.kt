@@ -1,6 +1,7 @@
 package org.seniorsigan.qrauthenticatorclient
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -65,17 +66,33 @@ class LoginActivity : AppCompatActivity() {
                         if (data != null && data.success) {
                             Log.d(TAG, "Logged in $url as ${account.name}")
                             accountsDb.nextTokenCount(account)
-                            onUiThread { toast("Logged in as ${account.name}") }
+                            goToSuccess(account)
+                        } else {
+                            Log.d(TAG, "Server response with error $data on $token for $account")
+                            goToFailure(account, token, "Server ${token.domainName} response with error $data on for ${account.name}")
                         }
                     }
                 }
 
                 override fun onFailure(request: Request?, e: IOException?) {
-                    Log.d(TAG, "Failed request to ${token.domainName}${token.path}: ${e?.message}")
+                    Log.d(TAG, "Failed request to ${token.domainName}${token.path} for $account because: ${e?.message}")
+                    goToFailure(account, token, e?.message ?: "Error")
                 }
-
             })
         }
+    }
+
+    private fun goToSuccess(account: AccountModel) {
+        Log.d(TAG, "Go to success activity")
+        val intent = Intent(this, SuccessActivity::class.java)
+        intent.putExtra(SUCCESS_INTENT, account)
+        startActivity(intent)
+    }
+
+    private fun goToFailure(account: AccountModel, token: Token, error: String) {
+        val intent = Intent(this, FailureActivity::class.java)
+        intent.putExtra(FAILURE_INTENT, error)
+        startActivity(intent)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?) {

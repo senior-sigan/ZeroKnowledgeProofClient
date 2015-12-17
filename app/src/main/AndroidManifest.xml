@@ -28,7 +28,9 @@
         </activity>
         <activity android:name=".TokenParserActivity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".LoginActivity"/>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".SuccessActivity" />
+        <activity android:name=".FailureActivity" />
     </application>
 
 </manifest>
