@@ -88,6 +88,7 @@ class LoginActivity : AppCompatActivity() {
         val message = "Logged in ${account.domain} as ${account.name}. Tokens used ${account.tokens.size - account.currentToken - 1}."
         intent.putExtra(SUCCESS_INTENT, message)
         startActivity(intent)
+        finish()
     }
 
     private fun goToFailure(account: AccountModel, token: Token, error: String) {
@@ -95,6 +96,7 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, FailureActivity::class.java)
         intent.putExtra(FAILURE_INTENT, error)
         startActivity(intent)
+        finish()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?) {

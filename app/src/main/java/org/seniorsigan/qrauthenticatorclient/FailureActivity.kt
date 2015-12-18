@@ -21,6 +21,7 @@ class FailureActivity : AppCompatActivity() {
         btn.onClick {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }

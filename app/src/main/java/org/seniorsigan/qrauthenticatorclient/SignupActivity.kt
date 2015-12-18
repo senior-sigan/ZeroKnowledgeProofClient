@@ -87,6 +87,7 @@ class SignupActivity : AppCompatActivity() {
         val message = "Signed up in ${account.domain} as ${account.name}. Tokens created ${account.tokens.size}"
         intent.putExtra(SUCCESS_INTENT, message)
         startActivity(intent)
+        finish()
     }
 
     private fun goToFailure(token: Token, error: String) {
@@ -94,6 +95,7 @@ class SignupActivity : AppCompatActivity() {
         val intent = Intent(this, FailureActivity::class.java)
         intent.putExtra(FAILURE_INTENT, error)
         startActivity(intent)
+        finish()
     }
 
     //TODO: may be nonce should include some value from server?

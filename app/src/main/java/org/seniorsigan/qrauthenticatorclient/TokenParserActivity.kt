@@ -21,6 +21,7 @@ class TokenParserActivity : AppCompatActivity() {
         } else {
             goToError()
         }
+        Log.d(TAG, "TokenParserActivity finished")
         finish()
     }
 
