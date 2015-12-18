@@ -1,6 +1,7 @@
 package org.seniorsigan.qrauthenticatorclient
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -51,7 +52,7 @@ class SignupActivity : AppCompatActivity() {
 
                     App.httpClient.newCall(request).enqueue(object: Callback {
                         override fun onFailure(request: Request?, e: IOException?) {
-                            Log.d(TAG, "Failed request to ${token.domainName}${token.path}: ${e?.message}")
+                            goToFailure(token, "Failed request to ${token.domainName}${token.path}: ${e?.message}")
                         }
 
                         override fun onResponse(response: Response?) {
@@ -60,14 +61,17 @@ class SignupActivity : AppCompatActivity() {
                                 Log.d(TAG, "Get from $url $rawJson")
                                 val data = App.gson.fromJson(rawJson, CommonResponse::class.java)
                                 if (data != null && data.success) {
-                                    accountsDb.saveAccount(AccountModel(
+                                    val account = AccountModel(
                                             name = model.login,
                                             domain = token.domainName,
                                             tokens = keys,
                                             currentToken = keys.size - 2
-                                    ))
+                                    )
+                                    accountsDb.saveAccount(account)
+                                    goToSuccess(account)
+                                } else {
+                                    goToFailure(token, "Error while signing up: $data")
                                 }
-                                onUiThread { toast("Signed up in ${token.domainName} as ${model.login}") }
                             }
                         }
                     })
@@ -75,6 +79,21 @@ class SignupActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun goToSuccess(account: AccountModel) {
+        Log.d(TAG, "Go to success activity")
+        val intent = Intent(this, SuccessActivity::class.java)
+        val message = "Signed up in ${account.domain} as ${account.name}. Tokens created ${account.tokens.size}"
+        intent.putExtra(SUCCESS_INTENT, message)
+        startActivity(intent)
+    }
+
+    private fun goToFailure(token: Token, error: String) {
+        Log.e(TAG, error)
+        val intent = Intent(this, FailureActivity::class.java)
+        intent.putExtra(FAILURE_INTENT, error)
+        startActivity(intent)
     }
 
     //TODO: may be nonce should include some value from server?

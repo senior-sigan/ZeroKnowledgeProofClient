@@ -85,11 +85,13 @@ class LoginActivity : AppCompatActivity() {
     private fun goToSuccess(account: AccountModel) {
         Log.d(TAG, "Go to success activity")
         val intent = Intent(this, SuccessActivity::class.java)
-        intent.putExtra(SUCCESS_INTENT, account)
+        val message = "Logged in ${account.domain} as ${account.name}. Tokens used ${account.tokens.size - account.currentToken - 1}."
+        intent.putExtra(SUCCESS_INTENT, message)
         startActivity(intent)
     }
 
     private fun goToFailure(account: AccountModel, token: Token, error: String) {
+        Log.e(TAG, error)
         val intent = Intent(this, FailureActivity::class.java)
         intent.putExtra(FAILURE_INTENT, error)
         startActivity(intent)

@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.TextView
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onClick
-import org.seniorsigan.qrauthenticatorclient.persistence.AccountModel
 
 class SuccessActivity : AppCompatActivity() {
 
@@ -16,10 +15,10 @@ class SuccessActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_success)
         Log.d(TAG, "In success activity")
-        val account = intent.getSerializableExtra(SUCCESS_INTENT) as AccountModel
+        val message = intent.getSerializableExtra(SUCCESS_INTENT) as String
         val btn = find<Button>(R.id.ok_button)
         val text = find<TextView>(R.id.success_message)
-        text.text = "Logged in ${account.domain} as ${account.name}. Tokens used ${account.tokens.size - account.currentToken - 1}."
+        text.text = message
         btn.onClick {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
