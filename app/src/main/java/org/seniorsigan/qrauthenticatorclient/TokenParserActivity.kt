@@ -11,22 +11,30 @@ class TokenParserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "Start Token Parsing")
         val tokenJson = intent.getStringExtra(RAW_TOKEN_INTENT)
-        val token = App.gson.fromJson(tokenJson, Token::class.java)
-        if (token != null) {
-            Log.d(TAG, "Token parsed successful ${token.toString()}")
-            when (token.type) {
-                "LOGIN" -> goToLogin(token)
-                "SIGNUP" -> goToSignup(token)
+        try {
+            val token = App.gson.fromJson(tokenJson, Token::class.java)
+            if (token != null) {
+                Log.d(TAG, "Token parsed successful ${token.toString()}")
+                when (token.type) {
+                    "LOGIN" -> goToLogin(token)
+                    "SIGNUP" -> goToSignup(token)
+                }
+            } else {
+                goToError("Token is empty: $tokenJson")
             }
-        } else {
-            goToError()
+        } catch (e: Exception) {
+            goToError("Json parse error for $tokenJson: ${e.message}")
         }
         Log.d(TAG, "TokenParserActivity finished")
         finish()
     }
 
-    private fun goToError() {
-
+    private fun goToError(error: String) {
+        Log.e(TAG, error)
+        val intent = Intent(this, FailureActivity::class.java)
+        intent.putExtra(FAILURE_INTENT, error)
+        startActivity(intent)
+        finish()
     }
 
     private fun goToSignup(token: Token) {
