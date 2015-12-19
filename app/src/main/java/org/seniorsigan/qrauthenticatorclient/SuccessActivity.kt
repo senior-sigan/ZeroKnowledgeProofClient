@@ -1,6 +1,5 @@
 package org.seniorsigan.qrauthenticatorclient
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -20,8 +19,6 @@ class SuccessActivity : AppCompatActivity() {
         val text = find<TextView>(R.id.success_message)
         text.text = message
         btn.onClick {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
             finish()
         }
     }

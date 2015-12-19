@@ -68,5 +68,6 @@ class QRCodeScannerActivity: AppCompatActivity(), ZXingScannerView.ResultHandler
         val intent = Intent(this, TokenParserActivity::class.java)
         intent.putExtra(RAW_TOKEN_INTENT, rawResult.text)
         startActivity(intent)
+        finish()
     }
 }

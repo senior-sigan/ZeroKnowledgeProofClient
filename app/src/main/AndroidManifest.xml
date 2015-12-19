@@ -27,13 +27,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".TokenParserActivity" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".SignupActivity" android:label="Signup"/>
+        <activity android:name=".LoginActivity" android:label="Choose account"/>
         <activity android:name=".SuccessActivity" />
         <activity android:name=".FailureActivity" />
         <activity android:name=".LinkScannerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="qrauth"/>
                 <data android:pathPattern=".*"/>

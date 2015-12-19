@@ -1,13 +1,11 @@
 package org.seniorsigan.qrauthenticatorclient
 
-import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.TextView
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onClick
-import org.seniorsigan.qrauthenticatorclient.persistence.AccountModel
 
 class FailureActivity : AppCompatActivity() {
 
@@ -19,8 +17,6 @@ class FailureActivity : AppCompatActivity() {
         val text = find<TextView>(R.id.fail_message)
         text.text = error
         btn.onClick {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
             finish()
         }
     }
