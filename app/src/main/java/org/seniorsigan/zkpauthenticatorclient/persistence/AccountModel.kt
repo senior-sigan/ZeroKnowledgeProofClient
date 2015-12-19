@@ -1,4 +1,4 @@
-package org.seniorsigan.qrauthenticatorclient.persistence
+package org.seniorsigan.zkpauthenticatorclient.persistence
 
 import java.io.Serializable
 import java.util.*

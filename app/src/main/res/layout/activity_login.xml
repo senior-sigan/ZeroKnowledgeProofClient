@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:fitsSystemWindows="true"
-    tools:context="org.seniorsigan.qrauthenticatorclient.LoginActivity">
+    tools:context="org.seniorsigan.zkpauthenticatorclient.LoginActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/accounts_recycler_view"

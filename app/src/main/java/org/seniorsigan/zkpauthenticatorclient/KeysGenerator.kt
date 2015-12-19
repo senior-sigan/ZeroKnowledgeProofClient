@@ -1,4 +1,4 @@
-package org.seniorsigan.qrauthenticatorclient
+package org.seniorsigan.zkpauthenticatorclient
 
 import java.security.MessageDigest
 

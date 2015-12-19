@@ -1,4 +1,4 @@
-package org.seniorsigan.qrauthenticatorclient
+package org.seniorsigan.zkpauthenticatorclient
 
 import android.support.v7.widget.RecyclerView
 import android.text.format.DateUtils
@@ -9,7 +9,7 @@ import android.widget.TextView
 import org.jetbrains.anko.find
 import org.jetbrains.anko.layoutInflater
 import org.jetbrains.anko.onClick
-import org.seniorsigan.qrauthenticatorclient.persistence.AccountModel
+import org.seniorsigan.zkpauthenticatorclient.persistence.AccountModel
 
 class AccountsAdapter(val accounts: List<AccountModel>): RecyclerView.Adapter<ViewHolder>() {
     var onItemClickListener: ((AccountModel) -> Unit)? = null

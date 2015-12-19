@@ -1,4 +1,4 @@
-package org.seniorsigan.qrauthenticatorclient
+package org.seniorsigan.zkpauthenticatorclient
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer

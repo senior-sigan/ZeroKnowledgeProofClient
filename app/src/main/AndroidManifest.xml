@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.seniorsigan.qrauthenticatorclient">
+    package="org.seniorsigan.zkpauthenticatorclient">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="org.seniorsigan.zkpauthenticatorclient.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,17 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".QRCodeScannerActivity">
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.QRCodeScannerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".TokenParserActivity" />
-        <activity android:name=".SignupActivity" android:label="Signup"/>
-        <activity android:name=".LoginActivity" android:label="Choose account"/>
-        <activity android:name=".SuccessActivity" />
-        <activity android:name=".FailureActivity" />
-        <activity android:name=".LinkScannerActivity">
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.TokenParserActivity" />
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.SignupActivity" android:label="Signup"/>
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.LoginActivity" android:label="Choose account"/>
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.SuccessActivity" />
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.FailureActivity" />
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.LinkScannerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />

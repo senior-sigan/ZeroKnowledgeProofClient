@@ -1,4 +1,4 @@
-package org.seniorsigan.qrauthenticatorclient
+package org.seniorsigan.zkpauthenticatorclient
 
 import android.Manifest
 import android.content.Intent
@@ -16,8 +16,8 @@ import com.squareup.okhttp.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onUiThread
 import org.jetbrains.anko.toast
-import org.seniorsigan.qrauthenticatorclient.persistence.AccountModel
-import org.seniorsigan.qrauthenticatorclient.persistence.AccountsOpenHelper
+import org.seniorsigan.zkpauthenticatorclient.persistence.AccountModel
+import org.seniorsigan.zkpauthenticatorclient.persistence.AccountsOpenHelper
 import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {

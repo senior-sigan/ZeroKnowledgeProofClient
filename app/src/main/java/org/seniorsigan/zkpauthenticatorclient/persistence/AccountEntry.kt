@@ -1,4 +1,4 @@
-package org.seniorsigan.qrauthenticatorclient.persistence
+package org.seniorsigan.zkpauthenticatorclient.persistence
 
 object AccountEntry {
     val _ID = "id"

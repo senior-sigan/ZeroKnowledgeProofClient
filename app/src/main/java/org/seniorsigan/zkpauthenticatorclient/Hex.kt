@@ -1,4 +1,4 @@
-package org.seniorsigan.qrauthenticatorclient
+package org.seniorsigan.zkpauthenticatorclient
 
 private val hexArray = "0123456789ABCDEF".toCharArray()
 

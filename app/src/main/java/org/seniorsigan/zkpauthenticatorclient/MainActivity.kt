@@ -1,4 +1,4 @@
-package org.seniorsigan.qrauthenticatorclient
+package org.seniorsigan.zkpauthenticatorclient
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,7 +13,7 @@ import android.view.View
 import android.widget.TextView
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onClick
-import org.seniorsigan.qrauthenticatorclient.persistence.AccountsOpenHelper
+import org.seniorsigan.zkpauthenticatorclient.persistence.AccountsOpenHelper
 
 class MainActivity : AppCompatActivity() {
     lateinit var accountsDb: AccountsOpenHelper

@@ -1,3 +1,3 @@
-package org.seniorsigan.qrauthenticatorclient.persistence
+package org.seniorsigan.zkpauthenticatorclient.persistence
 
 class PersistenceException(detailMessage: String?, throwable: Throwable? = null) : Exception(detailMessage, throwable)
