@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import com.squareup.okhttp.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onUiThread
@@ -41,6 +43,12 @@ class LoginActivity : AppCompatActivity() {
             sendLoginRequest(it, token)
         }
         accountsView.adapter = adapter
+
+        val noAccountsView = find<TextView>(R.id.noAccountsView)
+        noAccountsView.text = "You have no accounts for '${token.domainName}' :("
+        if (accounts.isEmpty()) {
+            noAccountsView.visibility = View.VISIBLE
+        }
     }
     
     fun sendLoginRequest(account: AccountModel, token: Token) {

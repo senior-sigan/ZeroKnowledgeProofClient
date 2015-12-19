@@ -1,5 +1,6 @@
 package org.seniorsigan.qrauthenticatorclient
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
@@ -17,6 +18,8 @@ class FailureActivity : AppCompatActivity() {
         val text = find<TextView>(R.id.fail_message)
         text.text = error
         btn.onClick {
+            val intent = Intent(this, QRCodeScannerActivity::class.java)
+            startActivity(intent)
             finish()
         }
     }

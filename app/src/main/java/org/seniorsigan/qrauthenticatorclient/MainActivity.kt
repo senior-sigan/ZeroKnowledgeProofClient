@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onClick
 import org.seniorsigan.qrauthenticatorclient.persistence.AccountsOpenHelper
@@ -35,6 +37,11 @@ class MainActivity : AppCompatActivity() {
         accountsView.setHasFixedSize(true)
         accountsView.layoutManager = LinearLayoutManager(this)
         accountsView.adapter = AccountsAdapter(accounts)
+
+        val noAccountsView = find<TextView>(R.id.noAccountsView)
+        if (accounts.isEmpty()) {
+            noAccountsView.visibility = View.VISIBLE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
