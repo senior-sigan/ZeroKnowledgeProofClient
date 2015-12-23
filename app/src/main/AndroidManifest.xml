@@ -36,7 +36,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="qrauth"/>
+                <data android:scheme="org.seniorsigan.zkpauth"/>
                 <data android:pathPattern=".*"/>
             </intent-filter>
         </activity>
