@@ -24,6 +24,13 @@ class App: Application() {
         val httpClient = OkHttpClient()
         val keysGenerator = KeysGenerator()
         val secureRandom = SecureRandom()
+        fun <T> parseJson(rawJson: String, classOf: Class<T>): T? {
+            try {
+                return App.gson.fromJson(rawJson, classOf)
+            } catch (e: Exception) {
+                return null
+            }
+        }
     }
 
     override fun attachBaseContext(base: Context?) {

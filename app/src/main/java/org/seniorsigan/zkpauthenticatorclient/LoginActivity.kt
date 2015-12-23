@@ -70,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
                     if (response != null) {
                         val rawJson = response.body().string()
                         Log.d(TAG, "Get from $url $rawJson")
-                        val data = App.gson.fromJson(rawJson, CommonResponse::class.java)
+                        val data = App.parseJson(rawJson, CommonResponse::class.java)
                         if (data != null && data.success) {
                             Log.d(TAG, "Logged in $url as ${account.name}")
                             accountsDb.nextTokenCount(account)
