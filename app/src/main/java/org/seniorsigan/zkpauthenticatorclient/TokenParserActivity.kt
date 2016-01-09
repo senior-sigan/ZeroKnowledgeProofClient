@@ -19,6 +19,7 @@ class TokenParserActivity : AppCompatActivity() {
                 when (token.type) {
                     "LOGIN" -> goToLogin(token)
                     "SIGNUP" -> goToSignup(token)
+                    else -> goToError("Undefined token type '${token.type}'")
                 }
             } else {
                 goToError("Token is empty: $tokenJson")
