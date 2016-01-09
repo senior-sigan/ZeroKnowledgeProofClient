@@ -22,7 +22,7 @@
         android:layout_height="match_parent" />
 
     <TextView
-        android:id="@+id/tokensUsed"
+        android:id="@+id/algorithm"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 </LinearLayout>

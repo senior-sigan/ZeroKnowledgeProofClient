@@ -12,26 +12,19 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import com.squareup.okhttp.*
 import org.jetbrains.anko.find
-import org.jetbrains.anko.onUiThread
 import org.jetbrains.anko.toast
-import org.seniorsigan.zkpauthenticatorclient.persistence.AccountModel
-import org.seniorsigan.zkpauthenticatorclient.persistence.AccountsOpenHelper
-import java.io.IOException
+import org.seniorsigan.zkpauthenticator.Authenticator
+import org.seniorsigan.zkpauthenticator.Token
+import org.seniorsigan.zkpauthenticatorclient.impl.repository.AccountModel
 
 class LoginActivity : AppCompatActivity() {
-    val protocol = "https://"
-    val jsonType = MediaType.parse("application/json; charset=utf-8")
-    lateinit var accountsDb: AccountsOpenHelper
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         val token = intent.getSerializableExtra(LOGIN_TOKEN_INTENT) as Token
-        accountsDb = AccountsOpenHelper(this)
-        val accounts = accountsDb.findAccounts(token.domainName)
+        val accounts = App.userRepository.findByDomain(token.domainName, token.algorithm)
         Log.d(TAG, accounts.toString())
 
         val accountsView = find<RecyclerView>(R.id.accounts_recycler_view)
@@ -50,57 +43,38 @@ class LoginActivity : AppCompatActivity() {
             noAccountsView.visibility = View.VISIBLE
         }
     }
-    
+
     fun sendLoginRequest(account: AccountModel, token: Token) {
-        val url = protocol + token.domainName + token.path
-        val model = LoginModel(account.name, account.tokens[account.currentToken], token.token)
-        val body = RequestBody.create(jsonType, App.gson.toJson(model))
-        Log.d(TAG, "Sending to $url data $model")
-        val request = Request.Builder()
-                .url(url)
-                .post(body)
-                .build()
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.INTERNET), App.CAN_USE_INTERNET)
-        } else {
-            Log.d(TAG, "Permissions on Internet obtained")
-            App.httpClient.newCall(request).enqueue(object: Callback {
-                override fun onResponse(response: Response?) {
-                    if (response != null) {
-                        val rawJson = response.body().string()
-                        Log.d(TAG, "Get from $url $rawJson")
-                        val data = App.parseJson(rawJson, CommonResponse::class.java)
-                        if (data != null && data.success) {
-                            Log.d(TAG, "Logged in $url as ${account.name}")
-                            accountsDb.nextTokenCount(account)
-                            goToSuccess(account)
-                        } else {
-                            Log.d(TAG, "Server response with error $data on $token for $account")
-                            goToFailure(account, token, "Server ${token.domainName} response with error $data on for ${account.name}")
-                        }
+        try {
+            val authenticator = App.authenticatorBuilder.get(token.algorithm)
+            withPermission {
+                authenticator.login(token, account.name, object : Authenticator.AuthenticatorCallback {
+                    override fun onSuccess(message: String) {
+                        goToSuccess(account)
                     }
-                }
 
-                override fun onFailure(request: Request?, e: IOException?) {
-                    Log.d(TAG, "Failed request to ${token.domainName}${token.path} for $account because: ${e?.message}")
-                    goToFailure(account, token, e?.message ?: "Error")
-                }
-            })
+                    override fun onFailure(message: String, throwable: Throwable?) {
+                        Log.e(TAG, throwable?.message, throwable)
+                        goToFailure(account, token, message)
+                    }
+                })
+            }
+        } catch (e: Exception) {
+            goToFailure(account, token, e.message ?: "")
         }
     }
 
     private fun goToSuccess(account: AccountModel) {
         Log.d(TAG, "Go to success activity")
         val intent = Intent(this, SuccessActivity::class.java)
-        val message = "Logged in ${account.domain} as ${account.name}. Tokens used ${account.tokens.size - account.currentToken - 1}."
+        val message = "Logged in ${account.domain} as ${account.name} with ${account.algorithm}."
         intent.putExtra(SUCCESS_INTENT, message)
         startActivity(intent)
         finish()
     }
 
     private fun goToFailure(account: AccountModel, token: Token, error: String) {
-        Log.e(TAG, error)
+        Log.e(TAG, "Can't login user ${account.name}@${account.domain} with token $token: $error")
         val intent = Intent(this, FailureActivity::class.java)
         intent.putExtra(FAILURE_INTENT, error)
         startActivity(intent)
@@ -108,15 +82,23 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?) {
-        when(requestCode) {
+        when (requestCode) {
             App.CAN_USE_INTERNET -> {
                 if (grantResults != null && grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d(TAG, "Permissions on Internet obtained")
-                }
-                else {
+                } else {
                     toast("You have not permission to use internet!")
                 }
             }
+        }
+    }
+
+    fun withPermission(block: () -> Unit) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.INTERNET), App.CAN_USE_INTERNET)
+        } else {
+            Log.d(TAG, "Permissions on Internet obtained")
+            block()
         }
     }
 }

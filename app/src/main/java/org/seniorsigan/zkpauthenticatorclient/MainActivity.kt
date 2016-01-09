@@ -7,22 +7,21 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onClick
-import org.seniorsigan.zkpauthenticatorclient.persistence.AccountsOpenHelper
 
 class MainActivity : AppCompatActivity() {
-    lateinit var accountsDb: AccountsOpenHelper
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar = find<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+        App.init(applicationContext)
 
         val fab = find<FloatingActionButton>(R.id.fab)
         fab.onClick { view ->
@@ -30,8 +29,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        accountsDb = AccountsOpenHelper(this)
-        val accounts = accountsDb.findAllAccounts()
+        val accounts = App.userRepository.findAll()
 
         val accountsView = find<RecyclerView>(R.id.accounts_recycler_view)
         accountsView.setHasFixedSize(true)
@@ -41,6 +39,12 @@ class MainActivity : AppCompatActivity() {
         val noAccountsView = find<TextView>(R.id.noAccountsView)
         if (accounts.isEmpty()) {
             noAccountsView.visibility = View.VISIBLE
+        }
+
+        try {
+            Log.d(TAG, "Found: ${App.userRepository.findAll().joinToString(",")}")
+        } catch(e: Exception) {
+            Log.e(TAG, "UPS: ${e.message}", e)
         }
     }
 

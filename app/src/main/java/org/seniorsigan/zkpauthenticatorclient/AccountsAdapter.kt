@@ -9,7 +9,7 @@ import android.widget.TextView
 import org.jetbrains.anko.find
 import org.jetbrains.anko.layoutInflater
 import org.jetbrains.anko.onClick
-import org.seniorsigan.zkpauthenticatorclient.persistence.AccountModel
+import org.seniorsigan.zkpauthenticatorclient.impl.repository.AccountModel
 
 class AccountsAdapter(val accounts: List<AccountModel>): RecyclerView.Adapter<ViewHolder>() {
     var onItemClickListener: ((AccountModel) -> Unit)? = null
@@ -32,14 +32,14 @@ class ViewHolder(view: View, var onItemClickListener: ((AccountModel) -> Unit)?)
     val name = view.find<TextView>(R.id.name)
     val domain = view.find<TextView>(R.id.domain)
     val updatedAt = view.find<TextView>(R.id.updatedAt)
-    val tokensUsed = view.find<TextView>(R.id.tokensUsed)
+    val algorithm = view.find<TextView>(R.id.algorithm)
 
     fun setItem(account: AccountModel) {
         Log.d(TAG, "ViewHolder should show $account")
         itemView?.onClick { onItemClickListener?.invoke(account) }
         name.text = account.name
         domain.text = account.domain
-        tokensUsed.text = "${account.tokens.size}/${account.currentToken}"
+        algorithm.text = account.algorithm
         updatedAt.text = DateUtils.getRelativeTimeSpanString(
                 account.updatedAt.time,
                 System.currentTimeMillis(),

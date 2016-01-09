@@ -3,12 +3,19 @@ package org.seniorsigan.zkpauthenticatorclient
 import android.app.Application
 import android.content.Context
 import android.support.multidex.MultiDex
+import android.util.Log
 import com.google.gson.GsonBuilder
 import com.squareup.okhttp.OkHttpClient
+import org.seniorsigan.zkpauthenticator.AuthenticatorBuilder
+import org.seniorsigan.zkpauthenticatorclient.impl.HttpTransport
+import org.seniorsigan.zkpauthenticatorclient.impl.ObjectConverter
+import org.seniorsigan.zkpauthenticatorclient.impl.repository.DatabaseOpenHelper
+import org.seniorsigan.zkpauthenticatorclient.impl.repository.UserSQLRepository
+import org.seniorsigan.zkpauthenticatorclient.impl.skey.SKeyAuthenticator
 import java.security.SecureRandom
 import java.util.*
 
-const val TAG = "QRAuth"
+const val TAG = "ZKPAuth"
 const val RAW_TOKEN_INTENT = "RAW_TOKEN_INTENT"
 const val SIGNUP_TOKEN_INTENT = "SIGNUP_TOKEN_INTENT"
 const val LOGIN_TOKEN_INTENT= "LOGIN_TOKEN_INTENT"
@@ -24,12 +31,27 @@ class App: Application() {
         val httpClient = OkHttpClient()
         val keysGenerator = KeysGenerator()
         val secureRandom = SecureRandom()
-        fun <T> parseJson(rawJson: String, classOf: Class<T>): T? {
-            try {
-                return App.gson.fromJson(rawJson, classOf)
-            } catch (e: Exception) {
-                return null
-            }
+
+        private var initialized = false
+        lateinit var userRepository: UserSQLRepository
+        val transport = HttpTransport(httpClient)
+        val converter = ObjectConverter(gson)
+        val authenticatorBuilder = AuthenticatorBuilder()
+
+        fun init(ctx: Context) {
+            synchronized(this, {
+                if (initialized) return
+                val dbHelper = DatabaseOpenHelper.getInstance(ctx)
+                userRepository = UserSQLRepository(dbHelper)
+                authenticatorBuilder.register(SKeyAuthenticator(
+                        userRepository,
+                        transport,
+                        keysGenerator,
+                        converter,
+                        secureRandom
+                ))
+                initialized = true
+            })
         }
     }
 

@@ -12,7 +12,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/signUpLogin"
+        android:id="@+id/username"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:inputType="text" />
@@ -22,6 +22,6 @@
         android:layout_height="wrap_content"
         android:text="Sign Up"
         android:id="@+id/signUpBtn"
-        android:layout_below="@+id/signUpLogin"
+        android:layout_below="@+id/username"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
