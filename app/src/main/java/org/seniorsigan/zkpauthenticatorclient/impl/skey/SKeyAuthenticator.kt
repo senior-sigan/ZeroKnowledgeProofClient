@@ -24,7 +24,7 @@ class SKeyAuthenticator(
                 val response = converter.from(data, CommonResponse::class.java)
                 if (response != null && response.success) {
                     createUser(token, username, keys)
-                    callback.onSuccess("User $username:${token.domainName} signed up")
+                    callback.onSuccess("User $username@${token.domainName} signed up")
                 } else {
                     callback.onFailure("Server respond with error $data", null)
                 }

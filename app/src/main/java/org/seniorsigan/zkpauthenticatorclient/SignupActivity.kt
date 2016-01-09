@@ -40,7 +40,7 @@ class SignupActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(message: String, throwable: Throwable?) {
-                        goToFailure(token, message)
+                        goToFailure(token, "$message: ${throwable?.message}")
                     }
                 })
             }

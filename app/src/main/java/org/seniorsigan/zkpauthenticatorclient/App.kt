@@ -32,31 +32,28 @@ class App: Application() {
         val keysGenerator = KeysGenerator()
         val secureRandom = SecureRandom()
 
-        private var initialized = false
         lateinit var userRepository: UserSQLRepository
         val transport = HttpTransport(httpClient)
         val converter = ObjectConverter(gson)
         val authenticatorBuilder = AuthenticatorBuilder()
-
-        fun init(ctx: Context) {
-            synchronized(this, {
-                if (initialized) return
-                val dbHelper = DatabaseOpenHelper.getInstance(ctx)
-                userRepository = UserSQLRepository(dbHelper)
-                authenticatorBuilder.register(SKeyAuthenticator(
-                        userRepository,
-                        transport,
-                        keysGenerator,
-                        converter,
-                        secureRandom
-                ))
-                initialized = true
-            })
-        }
     }
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        Log.d(TAG, "DB, Repository, Authenticators initialization")
+        val dbHelper = DatabaseOpenHelper.getInstance(applicationContext)
+        userRepository = UserSQLRepository(dbHelper)
+        authenticatorBuilder.register(SKeyAuthenticator(
+                userRepository,
+                transport,
+                keysGenerator,
+                converter,
+                secureRandom
+        ))
     }
 }
