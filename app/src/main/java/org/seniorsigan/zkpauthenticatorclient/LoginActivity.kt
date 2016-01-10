@@ -19,17 +19,22 @@ import org.seniorsigan.zkpauthenticator.Token
 import org.seniorsigan.zkpauthenticatorclient.impl.repository.AccountModel
 
 class LoginActivity : AppCompatActivity() {
+    lateinit var accountsView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val token = intent.getSerializableExtra(LOGIN_TOKEN_INTENT) as Token
-        val accounts = App.userRepository.findByDomain(token.domainName, token.algorithm)
-        Log.d(TAG, accounts.toString())
-
-        val accountsView = find<RecyclerView>(R.id.accounts_recycler_view)
+        accountsView = find<RecyclerView>(R.id.accounts_recycler_view)
         accountsView.setHasFixedSize(true)
         accountsView.layoutManager = LinearLayoutManager(this)
+
+        val token = intent.getSerializableExtra(LOGIN_TOKEN_INTENT) as Token
+        fillAccounts(token)
+    }
+
+    private fun fillAccounts(token: Token) {
+        val accounts = App.userRepository.findByDomain(token.domainName, token.algorithm)
         val adapter = AccountsAdapter(accounts)
         adapter.onItemClickListener = {
             Log.d(TAG, "Selected account $it")
@@ -38,9 +43,11 @@ class LoginActivity : AppCompatActivity() {
         accountsView.adapter = adapter
 
         val noAccountsView = find<TextView>(R.id.noAccountsView)
-        noAccountsView.text = "You have no accounts for '${token.domainName}' :("
-        if (accounts.isEmpty()) {
+        noAccountsView.text = "You have no accounts for '${token.domainName}' and ${token.algorithm} algorithm :("
+        if (adapter.itemCount == 0) {
             noAccountsView.visibility = View.VISIBLE
+        } else {
+            noAccountsView.visibility = View.INVISIBLE
         }
     }
 

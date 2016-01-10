@@ -6,10 +6,10 @@ import org.seniorsigan.zkpauthenticator.TransportCallback
 import java.io.IOException
 
 class HttpTransport(
-        val client: OkHttpClient
+        val client: OkHttpClient,
+        val protocol: String = "https://"
 ): Transport {
     val jsonType = MediaType.parse("application/json; charset=utf-8")
-    val protocol = "https://"
 
     override fun send(data: String, address: String, callback: TransportCallback) {
         val url = protocol + address

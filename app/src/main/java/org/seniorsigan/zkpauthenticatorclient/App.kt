@@ -6,11 +6,13 @@ import android.support.multidex.MultiDex
 import android.util.Log
 import com.google.gson.GsonBuilder
 import com.squareup.okhttp.OkHttpClient
+import org.seniorsigan.zkpauth.lib.SchnorrSignature
 import org.seniorsigan.zkpauthenticator.AuthenticatorBuilder
 import org.seniorsigan.zkpauthenticatorclient.impl.HttpTransport
 import org.seniorsigan.zkpauthenticatorclient.impl.ObjectConverter
 import org.seniorsigan.zkpauthenticatorclient.impl.repository.DatabaseOpenHelper
 import org.seniorsigan.zkpauthenticatorclient.impl.repository.UserSQLRepository
+import org.seniorsigan.zkpauthenticatorclient.impl.schnorr.SchnorrAuthenticator
 import org.seniorsigan.zkpauthenticatorclient.impl.skey.SKeyAuthenticator
 import java.security.SecureRandom
 import java.util.*
@@ -33,7 +35,7 @@ class App: Application() {
         val secureRandom = SecureRandom()
 
         lateinit var userRepository: UserSQLRepository
-        val transport = HttpTransport(httpClient)
+        val transport = HttpTransport(httpClient, "http://")
         val converter = ObjectConverter(gson)
         val authenticatorBuilder = AuthenticatorBuilder()
     }
@@ -54,6 +56,12 @@ class App: Application() {
                 keysGenerator,
                 converter,
                 secureRandom
+        )).register(SchnorrAuthenticator(
+                userRepository,
+                transport,
+                converter,
+                secureRandom,
+                SchnorrSignature()
         ))
     }
 }

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,6 +15,8 @@ import org.jetbrains.anko.find
 import org.jetbrains.anko.onClick
 
 class MainActivity : AppCompatActivity() {
+    lateinit var accountsView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,22 +29,25 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val accounts = App.userRepository.findAll()
-
-        val accountsView = find<RecyclerView>(R.id.accounts_recycler_view)
+        accountsView = find<RecyclerView>(R.id.accounts_recycler_view)
         accountsView.setHasFixedSize(true)
         accountsView.layoutManager = LinearLayoutManager(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        fillAccountsView()
+    }
+
+    private fun fillAccountsView() {
+        val accounts = App.userRepository.findAll()
         accountsView.adapter = AccountsAdapter(accounts)
 
         val noAccountsView = find<TextView>(R.id.noAccountsView)
-        if (accounts.isEmpty()) {
+        if (accountsView.adapter.itemCount == 0) {
             noAccountsView.visibility = View.VISIBLE
-        }
-
-        try {
-            Log.d(TAG, "Found: ${App.userRepository.findAll().joinToString(",")}")
-        } catch(e: Exception) {
-            Log.e(TAG, "UPS: ${e.message}", e)
+        } else {
+            noAccountsView.visibility = View.INVISIBLE
         }
     }
 
@@ -61,6 +65,12 @@ class MainActivity : AppCompatActivity() {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true
+        }
+
+        if (id == R.id.drop_all) {
+            App.userRepository.deleteAll()
+            fillAccountsView()
             return true
         }
 

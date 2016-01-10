@@ -72,7 +72,7 @@ class SKeyAuthenticator(
             }
 
             override fun onFailure(throwable: Throwable) {
-                callback.onFailure("Transport error", throwable)
+                callback.onFailure("Transport error: ${throwable.message}", throwable)
             }
         })
     }

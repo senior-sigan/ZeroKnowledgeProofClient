@@ -155,7 +155,8 @@ class UserSQLRepository(val db: DatabaseOpenHelper): UserRepository {
     }
 
     override fun deleteAll() {
-        throw UnsupportedOperationException()
+        db.writableDatabase.delete(TABLE_NAME, null, emptyArray())
+        Log.i(TAG, "All accounts was deleted")
     }
 
 }
