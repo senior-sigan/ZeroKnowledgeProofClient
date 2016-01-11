@@ -41,7 +41,10 @@ class SchnorrSignature {
     data class SessionPair(
             val x: BigInteger,
             val r: BigInteger
-    ): Serializable
+    ): Serializable {
+        fun public() = x
+        fun private() = r
+    }
 
     fun generateKey(): SchnorrKeyPair {
         val keyGen = KeyPairGenerator.getInstance("DSA")
