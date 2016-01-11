@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onClick
@@ -23,8 +24,8 @@ class MainActivity : AppCompatActivity() {
         val toolbar = find<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val fab = find<FloatingActionButton>(R.id.fab)
-        fab.onClick { view ->
+        val button = find<Button>(R.id.button)
+        button.onClick { view ->
             val intent = Intent(this, QRCodeScannerActivity::class.java)
             startActivity(intent)
         }
