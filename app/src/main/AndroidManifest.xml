@@ -27,12 +27,12 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name="org.seniorsigan.zkpauthenticatorclient.TokenParserActivity" />
-        <activity android:name="org.seniorsigan.zkpauthenticatorclient.SignupActivity" android:label="Signup"/>
-        <activity android:name="org.seniorsigan.zkpauthenticatorclient.LoginActivity" android:label="Choose account"/>
-        <activity android:name="org.seniorsigan.zkpauthenticatorclient.SuccessActivity" />
-        <activity android:name="org.seniorsigan.zkpauthenticatorclient.FailureActivity" />
-        <activity android:name="org.seniorsigan.zkpauthenticatorclient.LinkScannerActivity">
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.TokenParserActivity" android:noHistory="true"/>
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.SignupActivity" android:label="Signup" android:noHistory="true"/>
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.LoginActivity" android:label="Choose account" android:noHistory="true"/>
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.SuccessActivity" android:noHistory="true"/>
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.FailureActivity" android:noHistory="true"/>
+        <activity android:name="org.seniorsigan.zkpauthenticatorclient.LinkScannerActivity" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />

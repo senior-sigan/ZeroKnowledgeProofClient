@@ -35,7 +35,7 @@ class App: Application() {
         val secureRandom = SecureRandom()
 
         lateinit var userRepository: UserSQLRepository
-        val transport = HttpTransport(httpClient, "http://")
+        val transport = HttpTransport(httpClient)
         val converter = ObjectConverter(gson)
         val authenticatorBuilder = AuthenticatorBuilder()
     }

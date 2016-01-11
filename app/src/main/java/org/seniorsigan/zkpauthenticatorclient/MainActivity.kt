@@ -1,12 +1,15 @@
 package org.seniorsigan.zkpauthenticatorclient
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -33,6 +36,16 @@ class MainActivity : AppCompatActivity() {
         accountsView = find<RecyclerView>(R.id.accounts_recycler_view)
         accountsView.setHasFixedSize(true)
         accountsView.layoutManager = LinearLayoutManager(this)
+        accountsView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy <= 0) {
+                    button.visibility = View.VISIBLE
+                } else {
+                    button.visibility = View.INVISIBLE
+                }
+            }
+        })
     }
 
     override fun onStart() {
