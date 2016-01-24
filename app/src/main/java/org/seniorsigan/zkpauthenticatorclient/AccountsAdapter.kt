@@ -35,7 +35,7 @@ class ViewHolder(view: View, var onItemClickListener: ((AccountModel) -> Unit)?)
     val algorithm = view.find<TextView>(R.id.algorithm)
 
     fun setItem(account: AccountModel) {
-        Log.d(TAG, "ViewHolder should show $account")
+        Log.d(TAG, "ViewHolder should show ${account.name}@${account.domain}")
         itemView?.onClick { onItemClickListener?.invoke(account) }
         name.text = account.name
         domain.text = account.domain
