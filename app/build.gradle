@@ -63,7 +63,3 @@ dependencies {
         exclude module: 'multidex'
     }
 }
-
-repositories {
-    jcenter()
-}
