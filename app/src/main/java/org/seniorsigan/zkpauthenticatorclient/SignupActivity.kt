@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.toast
@@ -21,6 +22,8 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
         val token = intent.getSerializableExtra(SIGNUP_TOKEN_INTENT) as Token
+        val loginInfo = find<TextView>(R.id.signupRequestInfo)
+        loginInfo.text = "Signup request from ${token.requestInfo.ip}"
         val btn = find<Button>(R.id.signUpBtn)
         val login = find<EditText>(R.id.username)
         btn.onClick { view ->

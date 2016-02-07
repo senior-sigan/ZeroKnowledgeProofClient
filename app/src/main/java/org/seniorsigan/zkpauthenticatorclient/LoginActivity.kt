@@ -29,8 +29,11 @@ class LoginActivity : AppCompatActivity() {
         accountsView.setHasFixedSize(true)
         accountsView.layoutManager = LinearLayoutManager(this)
 
+        val loginInfo = find<TextView>(R.id.loginRequestInfo)
+
         val token = intent.getSerializableExtra(LOGIN_TOKEN_INTENT) as Token
         fillAccounts(token)
+        loginInfo.text = "Login request from ${token.requestInfo.ip}"
     }
 
     private fun fillAccounts(token: Token) {

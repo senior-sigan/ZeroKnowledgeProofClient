@@ -9,13 +9,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.seniorsigan.zkpauthenticatorclient.SignupActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Signup request info"
+        android:id="@+id/signupRequestInfo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/username"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:inputType="text" />
+        android:layout_below="@+id/signupRequestInfo"
+        android:inputType="text"
+        android:layout_marginTop="15dp" />
 
     <Button
         android:layout_width="wrap_content"
