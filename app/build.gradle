@@ -44,7 +44,7 @@ android {
 }
 
 ext {
-    anko_version = '0.8.1'
+    anko_version = '0.8.2'
     zxing_version = '3.2.1'
     multidex_version = '1.0.1'
     support_version = '23.1.1'

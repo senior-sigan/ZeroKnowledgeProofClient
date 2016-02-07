@@ -6,8 +6,6 @@ import java.security.KeyPairGenerator
 import java.security.SecureRandom
 import java.security.interfaces.DSAPrivateKey
 import java.security.interfaces.DSAPublicKey
-import kotlin.math.minus
-import kotlin.math.times
 
 /**
  * Schnorr signature authentication scheme.

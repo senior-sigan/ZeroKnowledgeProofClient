@@ -6,7 +6,7 @@ class KeysGenerator {
     val algorythm: String = "SHA-256"
 
     fun generateSequence(nonce: String, times: Int): List<String> {
-        val bNonce = nonce.toByteArray("UTF-8")
+        val bNonce = nonce.toByteArray()
         val seq: MutableList<ByteArray> = arrayListOf()
         seq.add(generate(bNonce))
         for (i in 1..times) {
